@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,63 +10,22 @@
 <body>
 
     <div class="content">
-        <form class="input-list" action="" method="get">
+        <form class="input-list" action="index.php" method="get">
             <input class="input-first" type="number" name="size">
             <input class="input-second" type="submit" value="OK">
         </form>
 
     <?php
+
+        require ('function.php');
+
         if(isset($_GET['size']))
-        {
-            function multiplicationTable($size) {
-                if ($size < 1 || $size > 100) {
-                    echo '<script>alert("Rozmiar tablicy mnożenia powinien być liczbą od 1 do 100.");</script>';
-                    return null;
-                }
-                $mysqli = new mysqli("localhost", "root", "", "masterlease");
-
-                if ($mysqli->connect_error) {
-                die("Błąd połączenia z bazą danych: " . $mysqli->connect_error);
-                }
-
-                $key = "multiplicationTable_" . $size;
-
-                $query = "SELECT * FROM cache WHERE wrench = ?";
-                $stmt = $mysqli->prepare($query);
-                $stmt->bind_param("s", $key);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                if ($result->num_rows > 0) {
-                    $row = $result->fetch_assoc();
-                    $table = json_decode($row["worth"], true);
-                    return $table;
-                }
-
-                $table = array();
-
-                for ($i = 1; $i <= $size; $i++) {
-                    $row = array();
-                    for ($j = 1; $j <= $size; $j++) {
-                        $row[] = $i * $j;
-                    }
-                    $table[] = $row;
-                }
-
-                $query = "INSERT INTO cache (wrench, worth) VALUES (?, ?)";
-                $stmt = $mysqli->prepare($query);    
-                $stmt->execute([$key, json_encode($table)]);
-                $stmt->close();
-                $mysqli->close();
-
-                return $table;
-            }
-            
+        {          
             $tabSize = $_GET['size'];
             $multiplicationTable = multiplicationTable($tabSize);
 
             if ($multiplicationTable === null) {
-            exit();
+                exit();
             }
 
             $json = json_encode($multiplicationTable);

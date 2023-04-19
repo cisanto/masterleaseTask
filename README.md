@@ -8,13 +8,13 @@ The project allows displaying a multiplication table of a specified size. The va
 ## Installation and commissioning
 
 1. Clone the repository to your local computer.
-2. Configure the database connection in the index.php file (line 26) by replacing the
+2. Configure the database connection in the db.php file by replacing the   values with your own
 ```
-('localhost', 'root', '', 'masterlease') 
-```
-  values with your own
-``` 
-('database host', 'username', 'password', 'database name')
+  $host = "database host"
+  $username = "username"
+  $pass = "password"
+  $dbName = "database name"
+
 ```
 
 3. Create a table named "cache" in your database using the following SQL command:
@@ -29,12 +29,14 @@ The project allows displaying a multiplication table of a specified size. The va
   
 ## Technical requirements:
 
-PHP version 7.0 or higher (I used version 8.1.5)
+PHP version 8.1.5
 
-MySQL database
+  Extension for PHP:
+  
+    - JSON
+    
+    - MySQLi
+    
+MySQL database version 10.4.24-MariaDB
 
 Web server (e.g. Apache)
-
-JSON extension for PHP
-
-MySQLi extension for PHP
